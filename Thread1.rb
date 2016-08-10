@@ -15,3 +15,6 @@ t2=Thread.new{show2(30)}
 t1.join();
 t2.join();
 puts "End of main"
+#webs=File.read("/home/iamfred/Ruby-Threads/Test.csv")
+#names=webs.split
+#puts names
