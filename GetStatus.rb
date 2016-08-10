@@ -13,8 +13,9 @@ end
 def make_csv(url,rank)
   http_code=getStatus("https://www."+url);
   https_code=getStatus("https://www."+url);
-  puts rank+","+url+","+http_code+","+https_code
+  #puts rank+","+url+","+http_code+","+https_code
   @out_file.puts(rank+","+url+","+http_code+","+https_code)
+  puts rank+" "+url
 end
 
 #puts getStatus("https://www.facebook.com")
@@ -23,9 +24,9 @@ webs=File.read("/home/iamfred/Ruby-Threads/Test.csv")
 @names=webs.split.map{|i| i.split(",")}#contains an array of [rank,url] pair
 @items=@names.size
 threads = Array.new
-(0..@items-1).each do |i|
-  #puts "url:www."+@names[i][1]+" rank "+@names[i][0]
-  threads.push(Thread.new{make_csv(@names[i][1],@names[i][0])})
-  #t2=Thread.new{make_csv()} 
-  threads.last.join()
-end 
+@names.each_slice(5) do |set|
+   set.each do |item|
+        threads.push(Thread.new{make_csv(item[1],item[0])})
+   end
+end
+threads.each{|thread| thread.join}
